@@ -5,14 +5,12 @@ module seven_seg_scanner(
 );
     reg [1:0] state;
 
-
-    dFF inst2(
-                .D(state[0]), 
-                .clk(div_clock),
-                .reset(reset),
-                .Q(state[1])
-            );          
-
+    always @(posedge div_clock or posedge reset) begin
+        if (reset)
+            state <= 0;
+        else
+            state <= state + 1;
+    end
     
    // Use the D FlipFlops from previous labs, and implement all other logic
     // purely combinatorial.
