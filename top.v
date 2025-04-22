@@ -19,12 +19,12 @@ module top
         .reset(btnC),
         .clock(clk),
         .div_clock(div_clk)
-    )
+    );
 
-    seven_seg_scanner scan (
+    seven_seg_scanner scan(
         .div_clock(div_clk),
         .reset(btnC),
-        .anode(an)
+        .anode(an[3:0])
     );
 
     math_block math (

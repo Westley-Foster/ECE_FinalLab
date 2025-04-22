@@ -1,27 +1,30 @@
 module seven_seg_scanner(
     input div_clock,
     input reset,
-    output [3:0] anode
+    output reg [3:0] anode
 );
     reg [1:0] state;
 
-    always @(posedge div_clock or posedge reset) begin
-        if (reset)
-            state <= 2'b00;
-        else
-            state <= state + 1;
-    end
+
+    dFF inst2(
+                .D(state[0]), 
+                .clk(div_clock),
+                .reset(reset),
+                .Q(state[1])
+            );          
+
     
    // Use the D FlipFlops from previous labs, and implement all other logic
     // purely combinatorial.
-    
-    always @(*) begin
+       always @(*) begin
         case (state)
-            2'b00: anode = 4'b1110; // Right 
-            2'b01: anode = 4'b1101; // RC 
-            2'b10: anode = 4'b1011; // LC 
-            2'b11: anode = 4'b0111; // Left
+            2'd00: anode[3:0] = 4'b1110; // Right
+            2'd01: anode[3:0] = 4'b1101; // Right Center
+            2'd10: anode[3:0] = 4'b1011; // Left Center
+            2'd11: anode[3:0] = 4'b0111; // Left
         endcase
     end
+    
+
 
 endmodule
