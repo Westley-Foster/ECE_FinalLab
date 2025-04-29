@@ -2,6 +2,7 @@ module top
 #(
     parameter DIVIDE_BY = 17 // Use this when passing in to your clock div!
     // The test bench will set it appropriately for testing
+    
 )
 (
     input [7:0] sw, // A and B
@@ -16,7 +17,7 @@ module top
     wire [3:0] AplusB, AminusB;
     
     //instantiate the clock divider
-    clock_div KHz(
+    clock_div #(.DIVIDE_BY(DIVIDE_BY)) KHz(
         .reset(btnC),
         .clock(clk),
         .div_clock(div_clk)
