@@ -15,40 +15,35 @@ module top
     wire [3:0] B = sw[7:4];
     wire [3:0] AplusB, AminusB;
     
+    //instantiate the clock divider
     clock_div KHz(
         .reset(btnC),
         .clock(clk),
         .div_clock(div_clk)
     );
 
+    //wires the clock divider wire to the scanner
     seven_seg_scanner scan(
         .div_clock(div_clk),
         .reset(btnC),
-        .anode(an[3:0])
+        .anode(an)
     );
-
+    
     math_block math (
-        .A(sw[3:0]),
-        .B(sw[7:4]),
+        .A(A),
+        .B(B),
         .AplusB(AplusB),
         .AminusB(AminusB)
     );
 
+    //connects scanner (A and B) and math block (AplusB and AminusB) to the decoder
     seven_seg_decoder driver (
         .A(A),
         .B(B),
         .AplusB(AplusB),
         .AminusB(AminusB),
-        .anode(an[3:0]),
+        .anode(an),
         .segs(seg[6:0])
     );
-
-    // Instantiate the clock divider...
-    // ... wire it up to the scanner
-    // ... wire the scanner to the decoder
-
-    // Wire up the math block into the decoder
-
-    // Do not forget to wire up resets!!
 
 endmodule

@@ -18,6 +18,9 @@ module seven_seg_decoder(
             default: selected_sig = 4'b0000;
         endcase
 end
+    
+    //simple decoder that assigns the segs components based on the 4 bit input 
+    //number to hexidecimal digit
     always @(*) begin
         case(selected_sig)
 				0:  segs = 7'b1000000;
@@ -36,7 +39,7 @@ end
 				13: segs = 7'b0100001; // D
 				14: segs = 7'b0000110; // E
 				15: segs = 7'b0001110;
-            default: segs = 7'b1000001;
+            default: segs = 7'b1111111;
         endcase
     end
 

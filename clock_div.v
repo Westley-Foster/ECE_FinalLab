@@ -7,21 +7,20 @@ module clock_div
     input clock,
     output reg div_clock
 );
-    assign NotClock = ~clock;
-    wire [DIVIDE_BY - 1:0] wirelink;
-   genvar i; 
-    generate 
-        for (i = 0; i < DIVIDE_BY; i = i + 1) 
-        begin
-            dFF inst(
-                .D(wirelink[i]), 
-                .clk(clock),
-                .reset(reset),
-                .Q(wirelink[i+1])
-            );          
-        end
-    endgenerate
+    reg [$clog2(DIVIDE_BY) - 1:0] count;
 
-    assign wirelink[0] = clock;
-    assign wirelink[DIVIDE_BY] = div_clock;
+    always @(posedge clock or posedge reset) begin
+	if (reset) begin
+	   count <= 0;
+	   div_clock <= 0;
+	end 
+        else if (count == (DIVIDE_BY - 1)) begin
+	   count <= 0;
+	   div_clock <= ~div_clock;
+	end
+	else begin
+	   count <= count + 1;
+	end
+    end
+
 endmodule
