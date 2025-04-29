@@ -1,21 +1,24 @@
 module dff(
-    input Default,
     input D,
     input clk,
     input reset,
-    output reg Q
+    output reg Q,
+    output NotQ
 );
 
-    //note: initial blocks work for synthesizers, but typically get ignored by FPGAs, so I omitted it
-    //initial begin
-    //    Q <= Default;
-    //end
 
-    always @(posedge clk or posedge reset) begin
-        if (reset)
-            Q <= Default;
-        else
-            Q <= D;
+    initial begin
+        Q <= D;
     end
+    
+    always @(posedge clk or posedge reset) begin
+          if (reset) begin
+               Q <= 0;
+          end else if (clk) begin
+               Q <= D;
+          end
+    end
+    
+    assign NotQ = ~Q;
 
 endmodule

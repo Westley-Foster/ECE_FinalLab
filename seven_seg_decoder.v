@@ -19,8 +19,6 @@ module seven_seg_decoder(
         endcase
 end
     
-    //simple decoder that assigns the segs components based on the 4 bit input 
-    //number to hexidecimal digit
     always @(*) begin
         case(selected_sig)
 				0:  segs = 7'b1000000;
@@ -44,20 +42,3 @@ end
     end
 
 endmodule
-
-    // This module should be purely combinatorial -- no reset required. What we
-    // are going to do here is simply display the correct four bit number
-    // according to the table provided in the lab deliverables section
-
-    // Recommended you do a simple behavioral implementation:
-    // alwyas @(*) begin
-    //   case (anode)
-    //      'b1110: selected_sig <= A
-    //      'b1101: selected_sig <= B
-    //      ...
-    //   endcase
-
-    // You will also need a very simple decoder that assigns the segs components
-    // based on the 4 bit input number to hexidecimal digit
-
-    // For reference:

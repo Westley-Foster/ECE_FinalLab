@@ -5,22 +5,28 @@ module clock_div
 (
     input reset,
     input clock,
-    output reg div_clock
+    output div_clock
 );
-    reg [$clog2(DIVIDE_BY) - 1:0] count;
+    wire [DIVIDE_BY:0] dffInLine;
+    wire [DIVIDE_BY:0] dffClkLine;
+    
+    assign clock = dffClkLine[0];
+    assign div_clock = dffInLine[DIVIDE_BY - 1];
+    
+    genvar i; 
+    generate 
+        for (i = 0; i < DIVIDE_BY; i = i + 1) 
+        begin
+            dff inst(
+                .D(dffInLine[i + 1]), 
+                .clk(dffClkLine[i]),
+                .reset(reset),
+                .Q(dffClkLine[i + 1]),
+                .NotQ(dffInLine[i + 1])
+            );
+        end
+    endgenerate
 
-    always @(posedge clock or posedge reset) begin
-	if (reset) begin
-	   count <= 0;
-	   div_clock <= 0;
-	end 
-        else if (count == (DIVIDE_BY - 1)) begin
-	   count <= 0;
-	   div_clock <= ~div_clock;
-	end
-	else begin
-	   count <= count + 1;
-	end
-    end
-
+//    assign wirelink[0] = clock;
+//    assign wirelink[DIVIDE_BY] = div_clock;
 endmodule
